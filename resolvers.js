@@ -38,6 +38,7 @@ const resolvers = {
       return newUser;
       // return newUser.save();
     },
+    // to push to github
   },
 };
 
