@@ -1,5 +1,9 @@
 import { users, quotes } from "./fakedb.js";
 import { randomBytes } from "crypto";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+
+const User = mongoose.model("User");
 
 // to respond to queries we need resolvers.
 // first argument is parent & since its at root level we get undefined, therefore passing '_'
@@ -17,13 +21,22 @@ const resolvers = {
   },
 
   Mutation: {
-    signUpUser: (_, { userNew }) => {
-      const _id = randomBytes(5).toString("hex");
-      users.push({
-        _id,
+    signUpUser: async (_, { userNew }) => {
+      const user = await User.findOne({ email: userNew.email });
+      if (user) {
+        throw new Error("User already exists with that email.");
+      }
+      // bcrypt.hash returns a promise
+      const hashedPassword = await bcrypt.hash(userNew.password, 12);
+
+      // spreadOperator since we are updating hashed password
+      const newUser = new User({
         ...userNew,
+        password: hashedPassword,
       });
-      return users.find((user) => user._id === _id);
+      await newUser.save();
+      return newUser;
+      // return newUser.save();
     },
   },
 };
