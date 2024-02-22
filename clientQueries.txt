@@ -1,0 +1,85 @@
+# Write your query or mutation here
+query getAllUsers{
+  users {
+    _id
+    firstName
+    lastName
+    email
+  }
+}
+
+------------------------------------------
+
+query getUserById{
+  user(_id:"23131"){
+    _id
+    firstName
+    lastName
+    email
+  }
+}
+
+query getUserById($userId:ID!){
+  user(_id:$userId){
+    _id
+    firstName
+    lastName
+    email
+  }
+}
+
+------------------------------------------
+
+query getALlQuotes{
+  quotes {
+    name,
+    by
+  }
+}
+
+------------------------------------------
+
+query getQuoteByUser {
+  iquote(by:"23131"){
+    name
+  }
+}
+
+------------------------------------------
+
+
+mutation createUser($firstName:String,$lastName:String,$email:String,$password:String,){
+  signUpUser(firstName:$firstName,lastName:$lastName,email:$email,password:$password)
+}
+
+
+mutation createUser($userNew: UserInput!) {
+  user:signUpUser(userNew: $userNew){
+    _id,
+    firstName,
+    lastName,
+    email
+  }
+}
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
+
+
+
+------------------------------------------
