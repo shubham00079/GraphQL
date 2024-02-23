@@ -12,24 +12,26 @@ const typeDefs = gql`
 
   type User {
     _id: ID!
-    firstName: String
-    lastName: String
-    email: String
+    firstName: String!
+    lastName: String!
+    email: String!
+    password: String!
     quotes: [Quote]
   }
 
   type Quote {
-    name: String
-    by: ID
+    name: String!
+    by: ID!
   }
 
   type Token {
-    token: String
+    token: String!
   }
 
   type Mutation {
     signUpUser(userNew: UserInput!): User
     signInUser(userSignIn: UserSignInInput!): Token
+    createQuote(name: String!): String
   }
 
   input UserInput {

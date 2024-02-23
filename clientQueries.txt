@@ -68,11 +68,17 @@ mutation createUser($userNew: UserInput!) {
 
 ------------------------------------------
 
-
+mutation signInUser($userSignIn:UserSignInInput!){
+  user:signInUser(userSignIn:$userSignIn){
+    token
+  }
+}
 
 ------------------------------------------
 
-
+mutation createQuote{
+  quote:createQuote(name:"I'm nice quote 2")
+}
 
 ------------------------------------------
 
