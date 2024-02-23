@@ -2,6 +2,8 @@ import { users, quotes } from "./fakedb.js";
 import { randomBytes } from "crypto";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "./config.js";
 
 const User = mongoose.model("User");
 
@@ -38,7 +40,19 @@ const resolvers = {
       return newUser;
       // return newUser.save();
     },
-    // to push to github
+    signInUser: async (_, { userSignIn }) => {
+      const user = await User.findOne({ email: userSignIn.email });
+      if (!user) {
+        throw new Error("User does not exist, please SignUp first.");
+      }
+      const doMatch = await bcrypt.compare(userSignIn.password, user.password);
+      if (!doMatch) {
+        throw new Error("Email or Password invalid.");
+      }
+
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+      return { token: token };
+    },
   },
 };
 

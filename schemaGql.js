@@ -23,13 +23,23 @@ const typeDefs = gql`
     by: ID
   }
 
+  type Token {
+    token: String
+  }
+
   type Mutation {
     signUpUser(userNew: UserInput!): User
+    signInUser(userSignIn: UserSignInInput!): Token
   }
 
   input UserInput {
     firstName: String!
     lastName: String!
+    email: String!
+    password: String!
+  }
+
+  input UserSignInInput {
     email: String!
     password: String!
   }
